@@ -1,5 +1,6 @@
 use std::fs;
 use std::io::{self, Read};
+mod solver;
 mod validation;
 
 pub struct Config {
@@ -54,9 +55,16 @@ pub fn run(config: Config) -> Result<(), String> {
         Err(e) => return Err(e),
     }
     println!("{}", contents);
-    match validation::validate_contents(&contents) {
+    let mut map = match validation::validate_contents(&contents) {
         Err(e) => return Err(e),
-        Ok(m) => println!("{:?}", m),
-    }
+        Ok(m) => m,
+    };
+    println!("Map before: {:?}", map);
+    let solve_res = solver::solver(&mut map);
+    println!("Map after: {:?}", map);
+    println!(
+        "SolveRes: x({}), y({}), size({})",
+        solve_res.x, solve_res.y, solve_res.size
+    );
     Ok(())
 }
