@@ -56,7 +56,7 @@ pub fn run(config: Config) -> Result<(), String> {
     println!("{}", contents);
     match validation::validate_contents(&contents) {
         Err(e) => return Err(e),
-        Ok(_) => {}
+        Ok(m) => println!("{:?}", m),
     }
     Ok(())
 }
