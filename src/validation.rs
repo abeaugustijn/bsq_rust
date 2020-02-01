@@ -6,10 +6,10 @@
 /// @return {Result<u32, String>}
 
 fn validate_height(line: &str) -> Result<u32, String> {
-	return match line.parse::<u32>() {
-		Ok(v) => Ok(v),
-		Err(_) => Err(String::from("Invalid first line")),
-	};
+    return match line.parse::<u32>() {
+        Ok(v) => Ok(v),
+        Err(_) => Err(String::from("Invalid first line")),
+    };
 }
 
 /// Validates a line. It checks for invalid characters and returns the width of the string for
@@ -20,40 +20,49 @@ fn validate_height(line: &str) -> Result<u32, String> {
 /// @param {&str} line - reference to the line to check
 
 fn validate_width(index: usize, line: &str) -> Result<u32, String> {
-	for c in String::from(line).chars() {
-		if c != '.' && c != 'o' {
-			return Err(format!("Invalid char(s) in line {}", index));
-		}
-	}
-	Ok(line.len() as u32)
+    for c in String::from(line).chars() {
+        if c != '.' && c != 'o' {
+            return Err(format!("Invalid char(s) in line {}", index));
+        }
+    }
+    Ok(line.len() as u32)
 }
 
-pub fn validate_contents(contents: &String) -> Result<(), String> {
-	let mut iter = contents.lines().enumerate();
+/// Validates the input file
+///
+/// @param {&String} contents - a reference to the contents of the input file
+///
+/// @return {Result<(), String>} //TODO: make it return the map
 
-	// Parse the first line to get the given amount of lines in the files (height)
-	let height = validate_height(match iter.next() {
-		Some((_, h)) => h,
-		None => return Err(String::from("File too short")),
-	})?;
+pub fn validate_contents(contents: &String) -> Result<Map, String> {
+    let mut iter = contents.lines().enumerate();
 
-	// First line should match the amount of lines
-	if contents.lines().count() as u32 != height + 1 {
-		return Err(String::from(
-			"First line does not define the correct amount of lines in the file",
-		));
-	}
+    // Parse the first line to get the given amount of lines in the files (height)
+    let height = validate_height(match iter.next() {
+        Some((_, h)) => h,
+        None => return Err(String::from("File too short")),
+    })?;
 
-	// Get the len of the second line to know what the len of every line should be
-	let width: u32 = match iter.next() {
-		Some((_, h)) => h.len() as u32,
-		None => return Err(String::from("File too short")),
-	};
+    // First line should match the amount of lines
+    if contents.lines().count() as u32 != height + 1 {
+        return Err(String::from(
+            "First line does not define the correct amount of lines in the file",
+        ));
+    }
 
-	for (i, l) in contents.lines().enumerate() {
-		if validate_width(i, l)? != width {
-			return Err(format!("Invalid line width for line {}", i));
-		}
-	}
-	Ok(())
+    // Get the len of the second line to know what the len of every line should be
+    let width: u32 = match iter.next() {
+        Some((_, h)) => h.len() as u32,
+        None => return Err(String::from("File too short")),
+    };
+
+    for (i, l) in contents.lines().enumerate() {
+        if i < 1 {
+            continue;
+        }
+        if validate_width(i, l)? != width {
+            return Err(format!("Invalid line width for line {}", i));
+        }
+    }
+    Ok(())
 }
