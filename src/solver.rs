@@ -36,7 +36,7 @@ pub fn solver(map: &mut Vec<Vec<u16>>) -> SolveRes {
 
     for i in 0..map.len() {
         for j in 0..map[i].len() {
-            if i == 0 || j == 0 {
+            if i == 0 || j == 0 || map[i][j] == 0 {
                 continue;
             }
             map[i][j] = map[i][j] + min(map[i - 1][j], map[i - 1][j - 1], map[i][j - 1]);

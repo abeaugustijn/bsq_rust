@@ -66,9 +66,9 @@ pub fn run(config: Config) -> Result<(), String> {
         Err(e) => return Err(e),
         Ok(m) => m,
     };
-    println!("Map before: {:?}", map);
+    println!("{:?}", map);
     let solve_res = solver::solver(&mut map);
-    println!("Map after: {:?}", map);
+    println!("{:?}", map);
     println!(
         "SolveRes: x({}), y({}), size({})",
         solve_res.x, solve_res.y, solve_res.size
