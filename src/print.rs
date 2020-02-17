@@ -8,8 +8,8 @@ use super::SolveRes;
 pub fn print_map(map: Vec<Vec<u16>>, solve_res: SolveRes) {
     for i in 0..map.len() {
         for j in 0..map[i].len() {
-            if j as u16 > solve_res.x - solve_res.size
-                && i as u16 > solve_res.y - solve_res.size
+            if j as u16 + 1 > solve_res.x - (solve_res.size - 1)
+                && i as u16 + 1 as u16 > solve_res.y - (solve_res.size - 1)
                 && (j as u16) < solve_res.x + 1
                 && (i as u16) < solve_res.y + 1
             {
