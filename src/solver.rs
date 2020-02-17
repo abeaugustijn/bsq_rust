@@ -1,8 +1,4 @@
-pub struct SolveRes {
-    pub x: u16,
-    pub y: u16,
-    pub size: u16,
-}
+use super::SolveRes;
 
 /// A simple function to determine the smallest of 3 integers
 ///
@@ -13,13 +9,16 @@ pub struct SolveRes {
 /// @return {u16}
 
 fn min(x: u16, y: u16, z: u16) -> u16 {
-    if x < y && x < z {
+    if x <= y && x <= z {
         return x;
     }
-    if y < x && y < z {
+    if y <= x && y <= z {
         return y;
     }
-    return z;
+    if z <= x && z <= y {
+        return z;
+    }
+    return x;
 }
 
 /// This solves the map
@@ -42,8 +41,8 @@ pub fn solver(map: &mut Vec<Vec<u16>>) -> SolveRes {
             }
             map[i][j] = map[i][j] + min(map[i - 1][j], map[i - 1][j - 1], map[i][j - 1]);
             if map[i][j] > res.size {
-                res.x = i as u16;
-                res.y = j as u16;
+                res.x = j as u16;
+                res.y = i as u16;
                 res.size = map[i][j];
             }
         }

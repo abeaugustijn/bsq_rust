@@ -1,7 +1,14 @@
 use std::fs;
 use std::io::{self, Read};
+mod print;
 mod solver;
 mod validation;
+
+pub struct SolveRes {
+    pub x: u16,
+    pub y: u16,
+    pub size: u16,
+}
 
 pub struct Config {
     pub filename: Option<String>,
@@ -66,5 +73,6 @@ pub fn run(config: Config) -> Result<(), String> {
         "SolveRes: x({}), y({}), size({})",
         solve_res.x, solve_res.y, solve_res.size
     );
+    print::print_map(map, solve_res);
     Ok(())
 }
